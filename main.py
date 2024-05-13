@@ -26,3 +26,12 @@ def get_user(user_id: int):
 @app.get('/trades')
 def get_trades(limit: int = 2, offset: int = 0):
     return fake_trades[offset:][:limit]
+
+
+@app.post('/users/{user_id}')
+def change_user_name(user_id: int, new_name: str):
+    current_user = list(filter(lambda user: user.get('id') == user_id, fake_users))
+    if current_user:
+        current_user[0]['name'] = new_name
+        return {'status': 200, 'data': f'Имя пользователя успешно изменено на {new_name}'}
+    return {'status': 404, 'data': f'Пользователь с id={user_id} не найден.'}
