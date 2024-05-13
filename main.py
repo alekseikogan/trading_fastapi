@@ -1,15 +1,39 @@
-from typing import List
-from fastapi import FastAPI
-from pydantic import BaseModel, Field
+from datetime import datetime
+from enum import Enum
+from typing import List, Optional
+from fastapi import FastAPI, Request, status
+from fastapi.encoders import jsonable_encoder
+from fastapi.exceptions import ResponseValidationError
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel, Field, ValidationError
 
 app = FastAPI(
     title='Trading App'
 )
 
+
+@app.exception_handler(ResponseValidationError)
+async def validation_exception_handler(request: Request, exc):
+    return JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content=jsonable_encoder({'message': exc.errors()})
+    )
+
+
+@app.exception_handler(ValidationError)
+async def response_validation_exception_handler(request: Request, exc):
+    return JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content=jsonable_encoder({'message': exc.errors()})
+    )
+
+
 fake_users = [
-    {'id': 1, 'role': 'admin', 'name': 'Bob'},
+    {'id': 1, 'role': 'admin', 'name': ['John', 'Doe']},
     {'id': 2, 'role': 'investor', 'name': 'Alex'},
-    {'id': 3, 'role': 'traider', 'name': 'Nasty'}
+    {'id': 3, 'role': 'traider', 'name': 'Nasty', 'degree': [
+        {'id': 1, 'created_at': '2024-05-11T02:55:59', 'type_degree': 'expert'}
+    ]}
 ]
 
 fake_trades = [
@@ -30,11 +54,24 @@ class Trade(BaseModel):
     amount: float = Field(g=0)
 
 
+class DegreeType(Enum):
+    noob = 'noob'
+    middle = 'middle'
+    expert = 'expert'
+
+
+class Degree(BaseModel):
+    id: int
+    created_at: datetime
+    type_degree: DegreeType
+
+
 class User(BaseModel):
     """Класс Пользователь"""
     id: int
     role: str
     name: str
+    degree: Optional[List[Degree]] = []
 
 
 @app.get('/users/{user_id}', response_model=List[User])
