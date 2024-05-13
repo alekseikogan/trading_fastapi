@@ -12,9 +12,9 @@ fake_users = [
 
 fake_trades = [
     {'id': 1, 'user_id': 2, 'side': 'buy', 'currency': 'BTC', 'price': 200, 'amount': 2.12},
-    {'id': 2, 'user_id': 3, 'side': 'sell', 'currency': 'BTC', 'price': 250, 'amount': 3.15},
+    {'id': 2, 'user_id': 3, 'side': 'sell', 'currency': 'LUNA', 'price': 5, 'amount': 200.00},
     {'id': 3, 'user_id': 1, 'side': 'sell', 'currency': 'BTC', 'price': 150, 'amount': 4.00},
-
+    {'id': 4, 'user_id': 1, 'side': 'buy', 'currency': 'EFT', 'price': 50, 'amount': 10.00},
 ]
 
 
@@ -22,6 +22,7 @@ fake_trades = [
 def get_user(user_id: int):
     return [user for user in fake_users if user.get('id') == user_id]
 
+
 @app.get('/trades')
-def get_trades(limit: int, offset: int):
+def get_trades(limit: int = 2, offset: int = 0):
     return fake_trades[offset:][:limit]
