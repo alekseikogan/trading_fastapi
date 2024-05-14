@@ -4,21 +4,21 @@ from sqlalchemy import (JSON, TIMESTAMP, Column, ForeignKey, Integer, MetaData,
 
 metadata = MetaData()
 
-roles = Table(
-    'roles',
+role = Table(
+    'role',
     metadata,
     Column('id', Integer, primary_key=True),
     Column('name', String, nullable=False),
     Column('permissions', JSON),
     )
 
-users = Table(
-    'users',
+user = Table(
+    'user',
     metadata,
     Column('id', Integer, primary_key=True),
     Column('email', String, nullable=False),
     Column('username', String, nullable=False),
     Column('password', String, nullable=False),
-    Column('registered_ad', TIMESTAMP, default=datetime.utcnow),
-    Column('role_id', Integer, ForeignKey('roles.id'))
+    Column('registered_at', TIMESTAMP, default=datetime.utcnow),
+    Column('role_id', Integer, ForeignKey('role.id'))
 )
