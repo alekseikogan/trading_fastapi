@@ -7,4 +7,5 @@ from src.auth.base_config import get_async_session
 
 
 async def get_user_db(session: AsyncSession = Depends(get_async_session)):
+    """Получение модели пользователя User."""
     yield SQLAlchemyUserDatabase(session, User)

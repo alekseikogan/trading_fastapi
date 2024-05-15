@@ -2,7 +2,8 @@ from typing import Optional
 
 from auth.database import User, get_user_db
 from fastapi import Depends, Request
-from fastapi_users import exceptions, BaseUserManager, IntegerIDMixin, models, schemas
+from fastapi_users import (exceptions, BaseUserManager, IntegerIDMixin,
+                           models, schemas)
 from config import SECRET_AUTH
 
 
@@ -11,8 +12,10 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     reset_password_token_secret = SECRET_AUTH
     verification_token_secret = SECRET_AUTH
 
-    async def on_after_register(self, user: User, request: Optional[Request] = None):
-        print(f"Пользователь {user.username} успешно зарегистрирован!")
+    async def on_after_register(
+            self, user: User, request: Optional[Request] = None
+    ):
+        print(f'Пользователь {user.username} успешно зарегистрирован!')
 
     async def create(
         self,
