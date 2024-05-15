@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi_users import FastAPIUsers
 
-from auth.auth import auth_backend
-from auth.database import User
+from auth.base_config import auth_backend
+from auth.models import User
 from auth.manager import get_user_manager
 from auth.schemas import UserCreate, UserRead
 

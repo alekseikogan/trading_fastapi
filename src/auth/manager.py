@@ -1,6 +1,7 @@
 from typing import Optional
 
-from auth.database import User, get_user_db
+from .models import User
+from .utils import get_user_db
 from fastapi import Depends, Request
 from fastapi_users import (exceptions, BaseUserManager, IntegerIDMixin,
                            models, schemas)
@@ -34,9 +35,10 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
             if safe
             else user_create.create_update_dict_superuser()
         )
-        password = user_dict.pop("password")
-        user_dict["hashed_password"] = self.password_helper.hash(password)
-        user_dict["role_id"] = 1
+        password = user_dict.pop('password')
+        user_dict['hashed_password'] = self.password_helper.hash(password)
+        # чтобы по умолчанию был обычный User без привелегий
+        user_dict['role_id'] = 1
 
         created_user = await self.user_db.create(user_dict)
 
