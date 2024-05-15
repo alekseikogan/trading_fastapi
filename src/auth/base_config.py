@@ -29,4 +29,6 @@ fastapi_users = FastAPIUsers[User, int](
     [auth_backend],
 )
 
+# получение текущего пользователя
+# можно ставить фильтры н-р active=True
 current_user = fastapi_users.current_user()
