@@ -1,8 +1,8 @@
-"""first api create
+"""lesson5
 
-Revision ID: 6a5ca104cb0e
+Revision ID: c6433b4b71bc
 Revises: 
-Create Date: 2024-05-14 11:45:56.624314
+Create Date: 2024-05-15 11:01:36.745578
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '6a5ca104cb0e'
+revision: str = 'c6433b4b71bc'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -30,7 +30,7 @@ def upgrade() -> None:
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('email', sa.String(), nullable=False),
     sa.Column('username', sa.String(), nullable=False),
-    sa.Column('password', sa.String(), nullable=False),
+    sa.Column('hashed_password', sa.String(), nullable=False),
     sa.Column('registered_at', sa.TIMESTAMP(), nullable=True),
     sa.Column('role_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['role_id'], ['role.id'], ),

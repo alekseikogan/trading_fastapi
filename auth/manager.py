@@ -1,19 +1,19 @@
 from typing import Optional
 
+from auth.database import User, get_user_db
 from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, IntegerIDMixin
-
-from database import User, get_user_db
 
 SECRET = "SECRET"
 
 
 class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
+    """Отвечает за создание пользователя"""
     reset_password_token_secret = SECRET
     verification_token_secret = SECRET
 
     async def on_after_register(self, user: User, request: Optional[Request] = None):
-        print(f"User {user.id} has registered.")
+        print(f"Пользователь {user.username} успешно зарегистрирован!")
 
     # async def on_after_forgot_password(
     #     self, user: User, token: str, request: Optional[Request] = None

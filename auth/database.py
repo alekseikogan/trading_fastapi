@@ -10,6 +10,7 @@ from sqlalchemy.ext.declarative import DeclarativeMeta, declarative_base
 from sqlalchemy.orm import DeclarativeBase
 
 from config import DB_HOST, DB_NAME, DB_PASS, DB_PORT, DB_USER
+from models.models import role
 
 DATABASE_URL = f'postgresql+asyncpg://%{DB_USER}s:%{DB_PASS}s@%{DB_HOST}s:%{DB_PORT}s/%{DB_NAME}s'
 # Метаданные для базы, о таблицах
