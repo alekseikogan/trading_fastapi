@@ -27,40 +27,39 @@ fastapi_users = FastAPIUsers[User, int](
 app.include_router(
     fastapi_users.get_auth_router(auth_backend),
     prefix="/auth/jwt",
-    tags=["auth"],
+    tags=["Auth"],
 )
 
 # для регистрации
 app.include_router(
     fastapi_users.get_register_router(UserRead, UserCreate),
     prefix="/auth",
-    tags=["auth"],
+    tags=["Auth"],
 )
 
-current_user = fastapi_users.current_user()
+app.include_router(router_operation)
+
+# @app.get('/protected-route')
+# def protected_route(user: User = Depends(current_user)):
+#     return f'Привет, {user.username}!'
 
 
-@app.get('/protected-route')
-def protected_route(user: User = Depends(current_user)):
-    return f'Привет, {user.username}!'
+# @app.get('/unprotected-route')
+# def unprotected_route():
+#     return 'Привет, аноним!'
 
 
-@app.get('/unprotected-route')
-def unprotected_route():
-    return 'Привет, аноним!'
+# @app.exception_handler(ResponseValidationError)
+# async def validation_exception_handler(request: Request, exc):
+#     return JSONResponse(
+#         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+#         content=jsonable_encoder({'message': exc.errors()})
+#     )
 
 
-@app.exception_handler(ResponseValidationError)
-async def validation_exception_handler(request: Request, exc):
-    return JSONResponse(
-        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-        content=jsonable_encoder({'message': exc.errors()})
-    )
-
-
-@app.exception_handler(ValidationError)
-async def response_validation_exception_handler(request: Request, exc):
-    return JSONResponse(
-        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-        content=jsonable_encoder({'message': exc.errors()})
-    )
+# @app.exception_handler(ValidationError)
+# async def response_validation_exception_handler(request: Request, exc):
+#     return JSONResponse(
+#         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+#         content=jsonable_encoder({'message': exc.errors()})
+#     )
