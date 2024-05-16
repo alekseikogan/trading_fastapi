@@ -1,8 +1,9 @@
 from http.client import HTTPException
+import time
 from fastapi import APIRouter, Depends
 from sqlalchemy import select, insert
 from sqlalchemy.ext.asyncio import AsyncSession
-
+from fastapi_cache.decorator import cache
 from src.database import get_async_session
 
 from .models import operation
@@ -41,3 +42,10 @@ async def add_specific_operations(new_operation: OperationCreate, session: Async
     stmt = insert(operation).values(**new_operation.dict())
     await session.execute(stmt)
     return {'status': 'success'}
+
+
+@router.get('long_operation')
+@cache(expire=30)
+def get_long_oper():
+    time.sleep(3)
+    return 'Данных много, поэтому они вычислялись 3 секунды!'
