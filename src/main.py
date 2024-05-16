@@ -6,6 +6,7 @@ from auth.models import User
 from auth.manager import get_user_manager
 from auth.schemas import UserCreate, UserRead
 from auth.base_config import current_user
+from operations import router_operation
 
 # создание главного приложения
 app = FastAPI(
@@ -33,7 +34,7 @@ app.include_router(
     tags=["Auth"],
 )
 
-# app.include_router(router_operation)
+app.include_router(router_operation)
 
 
 @app.get('/protected-route')
