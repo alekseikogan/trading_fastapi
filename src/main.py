@@ -5,8 +5,13 @@ from auth.base_config import auth_backend
 from auth.models import User
 from auth.manager import get_user_manager
 from auth.schemas import UserCreate, UserRead
-from auth.base_config import current_user
+
 from operations import router_operation
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.redis import RedisBackend
+
+
+from redis import asyncio as aioredis
 
 # создание главного приложения
 app = FastAPI(
@@ -37,11 +42,23 @@ app.include_router(
 app.include_router(router_operation)
 
 
-@app.get('/protected-route')
-def protected_route(user: User = Depends(current_user)):
-    return f'Привет, {user.username}!'
+@app.on_event('startup')
+async def startup_event():
+    redis = aioredis.from_url(
+        'redis://localhost', encoding='utf8', decode_responses=True)
+    FastAPICache.init(RedisBackend(redis), perfix='fastapi-cache')
 
 
-@app.get('/unprotected-route')
-def unprotected_route():
-    return 'Привет, аноним!'
+
+
+
+
+
+# @app.get('/protected-route')
+# def protected_route(user: User = Depends(current_user)):
+#     return f'Привет, {user.username}!'
+
+
+# @app.get('/unprotected-route')
+# def unprotected_route():
+#     return 'Привет, аноним!'
