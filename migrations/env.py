@@ -2,7 +2,7 @@ from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
-from src.config import DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASS, SECRET_AUTH
+from src.config import DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASS
 
 from alembic import context
 
@@ -26,7 +26,7 @@ config.set_section_option(section, 'DB_PORT', DB_PORT)
 config.set_section_option(section, 'DB_NAME', DB_NAME)
 config.set_section_option(section, 'DB_USER', DB_USER)
 config.set_section_option(section, 'DB_PASS', DB_PASS)
-config.set_section_option(section, 'SECRET_AUTH', SECRET_AUTH)
+
 
 
 # Interpret the config file for Python logging.

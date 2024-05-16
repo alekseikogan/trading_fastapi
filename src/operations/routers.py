@@ -4,9 +4,10 @@ from fastapi import APIRouter, Depends
 from sqlalchemy import select, insert
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi_cache.decorator import cache
-from src.database import get_async_session
 
-from .models import operation
+from database import get_async_session
+from operations.models import operation
+from operations.schemas import OperationCreate
 
 router = APIRouter(
     prefix='/operations',
@@ -44,7 +45,7 @@ async def add_specific_operations(new_operation: OperationCreate, session: Async
     return {'status': 'success'}
 
 
-@router.get('long_operation')
+@router.get('/long_operation')
 @cache(expire=30)
 def get_long_oper():
     time.sleep(3)

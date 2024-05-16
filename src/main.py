@@ -6,7 +6,8 @@ from auth.models import User
 from auth.manager import get_user_manager
 from auth.schemas import UserCreate, UserRead
 
-from operations import router_operation
+from operations.routers import router as router_operation
+from tasks.router import router as router_tasks
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 
@@ -40,18 +41,14 @@ app.include_router(
 )
 
 app.include_router(router_operation)
+app.include_router(router_tasks)
 
 
-@app.on_event('startup')
+@app.on_event("startup")
 async def startup_event():
-    redis = aioredis.from_url(
-        'redis://localhost', encoding='utf8', decode_responses=True)
-    FastAPICache.init(RedisBackend(redis), perfix='fastapi-cache')
-
-
-
-
-
+    redis = aioredis.from_url("redis://localhost",
+                              encoding="utf8", decode_responses=True)
+    FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
 
 
 # @app.get('/protected-route')
