@@ -53,10 +53,3 @@ async def ac() -> AsyncGenerator[AsyncClient, None]:
     """Для тестов асинхронные эндпоинты."""
     async with AsyncClient(app=app, base_url="http://test") as ac:
         yield ac
-
-# добавить в env
-# DB_HOST_TEST=localhost
-# DB_PORT_TEST=6000
-# DB_NAME_TEST=trading
-# DB_USER_TEST=alekseikogan
-# DB_PASS_TEST=StelsDelta200
