@@ -24,6 +24,7 @@ auth_backend = AuthenticationBackend(
     get_strategy=get_jwt_strategy,
 )
 
+# позволит генерировать фактические маршруты API
 fastapi_users = FastAPIUsers[User, int](
     get_user_manager,
     [auth_backend],

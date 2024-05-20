@@ -14,6 +14,7 @@ role = Table(
     Column('permissions', JSON),
 )
 
+# Императивный способ записи в БД
 user = Table(
     'user',
     metadata,
@@ -29,6 +30,7 @@ user = Table(
 )
 
 
+# Декларативный способ записи в БД
 class User(SQLAlchemyBaseUserTable[int], Base):
     id = Column(Integer, primary_key=True)
     email = Column(String, nullable=False)
