@@ -7,10 +7,10 @@ from redis import asyncio as aioredis
 
 from auth.base_config import auth_backend, fastapi_users
 from auth.schemas import UserCreate, UserRead
+from chat.router import router as router_chat
 from operations.routers import router as router_operation
 from pages.router import router as router_pages
 from tasks.router import router as router_tasks
-from chat.router import router as router_chat
 
 # создание главного приложения
 app = FastAPI(

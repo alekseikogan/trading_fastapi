@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Depends
+from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
 from sqlalchemy import insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -55,6 +55,8 @@ manager = ConnectionManager()
 async def get_last_messages(
         session: AsyncSession = Depends(get_async_session),
 ) -> List[MessagesModel]:
+    """Получение пяти последних сообщений."""
+
     query = select(Messages).order_by(Messages.id.desc()).limit(5)
     messages = await session.execute(query)
     return messages.scalars().all()
