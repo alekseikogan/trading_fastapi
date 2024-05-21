@@ -10,6 +10,7 @@ from auth.schemas import UserCreate, UserRead
 from operations.routers import router as router_operation
 from pages.router import router as router_pages
 from tasks.router import router as router_tasks
+from chat.router import router as router_chat
 
 # создание главного приложения
 app = FastAPI(
@@ -50,6 +51,7 @@ app.include_router(
 app.include_router(router_operation)
 app.include_router(router_tasks)
 app.include_router(router_pages)
+app.include_router(router_chat)
 
 
 @app.on_event('startup')
