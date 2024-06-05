@@ -62,6 +62,7 @@ app.include_router(router_pages)
 
 @app.on_event('startup')
 async def startup_event():
+    """Дейстивия при старте uvicorn."""
     redis = aioredis.from_url('redis://localhost',
                               encoding='utf8', decode_responses=True)
     FastAPICache.init(RedisBackend(redis), prefix='fastapi-cache')
