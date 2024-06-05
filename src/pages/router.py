@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request, Depends
+from fastapi import APIRouter, Depends, Request
 from fastapi.templating import Jinja2Templates
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -37,5 +37,14 @@ def get_search_page(request: Request, operations=Depends(get_specific_operations
         {
             'request': request,
             'operations': operations['data']
+        }
+    )
+
+@router.get('/chat')
+def get_chat_page(request: Request):
+    return templates.TemplateResponse(
+        'chat.html',
+        {
+            'request': request,
         }
     )

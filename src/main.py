@@ -1,15 +1,13 @@
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
-from fastapi_users import FastAPIUsers
 from redis import asyncio as aioredis
 
-from auth.base_config import auth_backend
-from auth.manager import get_user_manager
-from auth.models import User
+from auth.base_config import auth_backend, fastapi_users
 from auth.schemas import UserCreate, UserRead
+from chat.router import router as router_chat
 from operations.routers import router as router_operation
 from pages.router import router as router_pages
 from tasks.router import router as router_tasks
@@ -34,11 +32,6 @@ app.add_middleware(
                    'Authorization'],
 )
 
-# позволит генерировать фактические маршруты API
-fastapi_users = FastAPIUsers[User, int](
-    get_user_manager,
-    [auth_backend],
-)
 
 # создание роутеров
 # для авторизации
@@ -58,6 +51,7 @@ app.include_router(
 app.include_router(router_operation)
 app.include_router(router_tasks)
 app.include_router(router_pages)
+app.include_router(router_chat)
 
 
 @app.on_event('startup')
